@@ -1,0 +1,169 @@
+:root {
+  --primary: #007bff;
+  --muted: #6c757d;
+  --card-bg: #ffffff;
+  --radius: 10px;
+}
+
+body {
+  background: linear-gradient(180deg, #f6f9ff 0%, #ffffff 100%);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color: #222;
+  min-height: 100vh;
+}
+
+.app-shell {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.card {
+  border: none;
+  border-radius: var(--radius);
+}
+
+.card-header {
+  background: linear-gradient(90deg, var(--primary), #2b9bff);
+  color: white;
+  border-top-left-radius: var(--radius);
+  border-top-right-radius: var(--radius);
+  font-weight: 600;
+}
+
+.data-table-wrapper,
+.result-table-wrapper {
+  max-height: 300px;
+  overflow: auto;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 6px;
+  padding: 8px;
+  background: #fbfdff;
+}
+
+#data-table,
+#result-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+#data-table th,
+#data-table td,
+#result-table th,
+#result-table td {
+  padding: 6px 8px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+#result-table th {
+  background: rgba(0, 123, 255, 0.08);
+  font-weight: 600;
+}
+
+/* ✅ 修改：每行最多 2 个子图，正方形，对齐右侧 */
+.plot-area {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 固定两列 */
+  gap: 16px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.plot-area > div {
+  width: 100%;
+  height: 0;
+  padding-bottom: 100%; /* 正方形 */
+  position: relative;
+  background: white;
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.plot-area > div > div {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+@media (max-width: 991px) {
+  .plot-area {
+    grid-template-columns: 1fr; /* 小屏堆叠 */
+  }
+}
+
+/* 拖拽区域 */
+.drop-area {
+  position: relative;
+  border: 2px dashed #007bff;
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+  background-color: #e7f3ff;
+  transition: background-color 0.3s;
+  cursor: pointer;
+}
+
+.drop-area.highlight {
+  background-color: #d0e7ff;
+  border-color: #0056b3;
+}
+
+.drop-area p {
+  margin: 0;
+  color: #007bff;
+  font-weight: 500;
+}
+
+/* 加载动画 */
+.loading-text::after {
+  content: '…';
+  animation: ellipsis 1.5s steps(4, end) infinite;
+}
+
+@keyframes ellipsis {
+  0%, 25% { content: ''; }
+  26%, 50% { content: '.'; }
+  51%, 75% { content: '..'; }
+  76%, 100% { content: '...'; }
+}
+
+/* 下拉框布局 */
+.method-row {
+  display: flex;
+  gap: 6px;
+}
+
+.method-row select {
+  font-size: 13px;
+  padding: 6px 8px;
+}
+
+/* 顶部 Logo 和标题 */
+.logo-container {
+  background-color: var(--primary); /* 蓝色底色 */
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.title-container {
+  display: inline-block;
+  vertical-align: middle;
+  color: white; /* 文字颜色 */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+.title-container h3 {
+  margin-bottom: 0;
+  font-size: 2rem; /* 调整标题大小 */
+  font-weight: bold; /* 加粗字体 */
+}
+
+.title-container small {
+  font-size: 0.9rem; /* 调整副标题大小 */
+}

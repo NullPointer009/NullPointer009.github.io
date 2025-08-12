@@ -1,0 +1,380 @@
+/* 全局变量 */
+:root {
+    --primary: #007bff;
+    --primary-light: #2b9bff;
+    --primary-dark: #0056b3;
+    --muted: #6c757d;
+    --card-bg: #ffffff;
+    --radius: 10px;
+    --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    --shadow-hover: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* 重置和基础样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: linear-gradient(180deg, #f6f9ff 0%, #ffffff 100%);
+    color: #222;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+.container {
+    display: flex;
+    max-width: 1600px;
+    height: 100vh;
+    margin: 0 auto;
+    padding: 20px;
+    gap: 20px;
+}
+
+.left-panel {
+    flex: 1;
+    max-width: 600px;
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow-y: auto;
+    max-height: calc(100vh - 40px);
+    border: 1px solid rgba(0, 123, 255, 0.1);
+}
+
+.right-panel {
+    flex: 2;
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 20px;
+    overflow: hidden;
+    border: 1px solid rgba(0, 123, 255, 0.1);
+}
+
+#plot-container {
+    width: 100%;
+    height: 100%;
+    min-height: 500px;
+    position: relative;
+    overflow: hidden;
+}
+
+.js-plotly-plot {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* 标题样式 */
+h3 {
+    color: var(--primary);
+    margin-bottom: 15px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* 各个功能区域 */
+.input-section, .variable-section, .range-section {
+    background: #fbfdff;
+    border-radius: var(--radius);
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 1px solid rgba(0, 123, 255, 0.08);
+}
+
+/* 输入框和选择框 */
+.input-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+input[type="text"], select, input[type="number"] {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    font-size: 14px;
+    transition: all 0.3s;
+    background: white;
+}
+
+input[type="text"]:focus, select:focus, input[type="number"]:focus {
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+}
+
+/* 按钮样式 */
+button {
+    background: linear-gradient(90deg, var(--primary), var(--primary-light));
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s;
+    box-shadow: var(--shadow);
+}
+
+button:hover {
+    background: linear-gradient(90deg, var(--primary-dark), var(--primary));
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-1px);
+}
+
+button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+/* 变量列表 */
+.variable-list {
+    max-height: 100px;
+    overflow-y: auto;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    padding: 10px;
+    margin-bottom: 15px;
+    background: white;
+}
+
+.variable-item {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    padding: 5px;
+    border-bottom: 1px solid #eee;
+    color: #333;
+    font-size: 13px;
+}
+
+.variable-item:last-child {
+    border-bottom: none;
+}
+
+/* 绘图模式选择 */
+.plot-mode {
+    margin-bottom: 15px;
+}
+
+.plot-mode select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    background-color: white;
+    font-size: 14px;
+}
+
+/* 坐标轴选择 */
+.axis-selection {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.axis-group {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 120px;
+}
+
+.axis-group label {
+    margin-bottom: 0;
+    white-space: nowrap;
+    font-size: 13px;
+    color: #555;
+}
+
+.axis-group select {
+    flex: 1;
+    max-width: 160px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 6px 8px;
+    font-size: 13px;
+}
+
+.axis-group select option {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 140px;
+}
+
+/* 变量控制区域 */
+.variable-control-header {
+    display: grid;
+    grid-template-columns: 80px 1fr 1fr 1fr;
+    gap: 10px;
+    padding: 10px;
+    background: rgba(0, 123, 255, 0.08);
+    border-radius: 6px;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: var(--primary);
+    font-size: 13px;
+}
+
+.variable-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.variable-control {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 80px 1fr 1fr 1fr;
+    gap: 10px;
+    align-items: center;
+}
+
+.variable-control label {
+    margin-bottom: 0;
+    white-space: nowrap;
+    font-size: 13px;
+    color: #555;
+}
+
+.variable-control input[type="number"] {
+    padding: 6px 8px;
+    font-size: 13px;
+}
+
+/* 更新按钮 */
+.update-button {
+    margin-top: auto;
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 6px;
+}
+
+/* 滚动条样式 */
+.left-panel::-webkit-scrollbar {
+    width: 6px;
+}
+
+.left-panel::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.left-panel::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 3px;
+}
+
+.left-panel::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-dark);
+}
+
+.variable-controls::-webkit-scrollbar {
+    width: 6px;
+}
+
+.variable-controls::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.variable-controls::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 3px;
+}
+
+.variable-controls::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-dark);
+}
+
+/* 响应式设计 */
+@media (max-width: 1200px) {
+    .container {
+        flex-direction: column;
+        height: auto;
+        padding: 15px;
+    }
+    
+    .left-panel {
+        max-width: 100%;
+        max-height: none;
+    }
+    
+    .right-panel {
+        min-height: 500px;
+    }
+}
+
+@media (max-width: 768px) {
+    .axis-selection {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .axis-group {
+        width: 100%;
+    }
+    
+    .variable-control {
+        grid-template-columns: 60px 1fr 1fr 1fr;
+    }
+    
+    .variable-control-header {
+        grid-template-columns: 60px 1fr 1fr 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .left-panel, .right-panel {
+        padding: 15px;
+    }
+    
+    .variable-control {
+        grid-template-columns: 50px 1fr 1fr 1fr;
+        padding: 8px;
+    }
+    
+    .variable-control-header {
+        grid-template-columns: 50px 1fr 1fr 1fr;
+        padding: 8px;
+        font-size: 12px;
+    }
+    
+    .axis-group select {
+        max-width: 120px;
+    }
+}

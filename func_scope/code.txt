@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FuncScope</title>
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="../static/icons/func.svg">
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.4.4/math.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="left-panel">
+            <div class="input-section">
+                <h3>函数输入</h3>
+                <div class="input-group">
+                    <label for="function-input">输入函数:</label>
+                    <input type="text" id="function-input" placeholder="例如: sin(x) + cos(y)">
+                </div>
+                <button id="parse-button">解析函数</button>
+            </div>
+
+            <div class="variable-section">
+                <h3>变量选择</h3>
+                <div class="available-variables">
+                    <label>可用变量:</label>
+                    <div id="variable-list" class="variable-list"></div>
+                </div>
+                
+                <div class="plot-variables">
+                    <label>选择绘图变量:</label>
+                    <div class="plot-mode">
+                        <select id="plot-mode">
+                            <option value="2D">2D绘图</option>
+                            <option value="3D">3D绘图</option>
+                        </select>
+                    </div>
+                    
+                    <div class="axis-selection">
+                        <div class="axis-group">
+                            <label for="x-axis">X轴:</label>
+                            <select id="x-axis" disabled></select>
+                        </div>
+                        <div class="axis-group">
+                            <label for="y-axis">Y轴:</label>
+                            <select id="y-axis" disabled></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="range-section">
+                <h3>变量范围设置</h3>
+                <div class="variable-control-header">
+                    <span>变量名称</span>
+                    <span>下限</span>
+                    <span>上限</span>
+                    <span>值</span>
+                </div>
+                <div id="variable-controls" class="variable-controls"></div>
+            </div>
+
+            <button id="update-plot" class="update-button" disabled>更新图像</button>
+        </div>
+
+        <div class="right-panel">
+            <div id="plot-container"></div>
+        </div>
+    </div>
+
+    <script src="./script.js"></script>
+</body>
+</html>
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+.container {
+    display: flex;
+    max-width: 1600px;
+    height: 100vh;
+    margin: 0 auto;
+    padding: 20px;
+    gap: 20px;
+}
+
+.left-panel {
+    flex: 1;
+    max-width: 600px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow-y: auto;
+    max-height: calc(100vh - 40px);
+}
+
+.right-panel {
+    flex: 2;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    overflow: hidden;
+}
+
+#plot-container {
+    width: 100%;
+    height: 100%;
+    min-height: 500px;
+    position: relative;
+    overflow: hidden;
+}
+
+.js-plotly-plot {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+h3 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.input-section, .variable-section, .range-section {
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+    font-weight: 500;
+}
+
+input[type="text"], select, input[type="number"] {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus, select:focus, input[type="number"]:focus {
+    border-color: #4a90e2;
+    outline: none;
+}
+
+button {
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #357abd;
+}
+
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.variable-list {
+    max-height: 100px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 15px;
+}
+
+.variable-item {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    padding: 5px;
+    border-bottom: 1px solid #eee;
+}
+
+.plot-mode {
+    margin-bottom: 15px;
+}
+
+
+.variable-control span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 80px;
+}
+
+.plot-mode select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+}
+
+.axis-selection {
+    display: flex;
+    gap: 15px;
+}
+
+.axis-group {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.axis-group label {
+    margin-bottom: 0;
+    white-space: nowrap;
+}
+
+.axis-group select {
+    flex: 1;
+    max-width: 160px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.axis-group select option {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 140px;
+}
+
+.variable-control-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 10px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.variable-control {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 10px;
+    padding: 10px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.variable-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.variable-control {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 80px 1fr 1fr 1fr;
+    gap: 10px;
+    align-items: center;
+}
+
+.variable-control label {
+    margin-bottom: 0;
+    white-space: nowrap;
+}
+
+.update-button {
+    margin-top: auto;
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: 500;
+} 
