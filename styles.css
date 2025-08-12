@@ -1,3 +1,15 @@
+/* 全局变量 */
+:root {
+    --primary: #007bff;
+    --primary-light: #2b9bff;
+    --muted: #6c757d;
+    --card-bg: #ffffff;
+    --radius: 10px;
+    --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    --shadow-hover: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* 重置和基础样式 */
 * {
     margin: 0;
     padding: 0;
@@ -5,10 +17,11 @@
 }
 
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
     line-height: 1.6;
-    background-color: #f5f5f5;
-    color: #333;
+    background: linear-gradient(180deg, #f6f9ff 0%, #ffffff 100%);
+    color: #222;
+    min-height: 100vh;
 }
 
 .container {
@@ -17,90 +30,143 @@ body {
     padding: 20px;
 }
 
+/* 头部样式 */
 header {
     text-align: center;
     padding: 40px 0;
-    background: linear-gradient(135deg, #6e8efb, #a777e3);
+    background: linear-gradient(90deg, var(--primary), var(--primary-light));
     color: white;
-    border-radius: 10px;
+    border-radius: var(--radius);
     margin-bottom: 30px;
+    box-shadow: var(--shadow);
 }
 
 header h1 {
-    font-size: 2.5em;
+    font-size: 2.5rem;
+    font-weight: 600;
     margin-bottom: 10px;
 }
 
+/* 个人简介区域 */
 .profile {
-    background: white;
+    background: var(--card-bg);
     padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
     margin-bottom: 30px;
 }
 
 .profile-content h2 {
-    color: #333;
+    color: var(--primary);
     margin-bottom: 15px;
+    font-weight: 600;
 }
 
+.profile-content p {
+    color: #555;
+    font-size: 1.1rem;
+}
+
+/* 软件展示区域 */
 .software-section {
-    background: white;
+    background: var(--card-bg);
     padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
 }
 
 .software-section h2 {
     text-align: center;
     margin-bottom: 30px;
-    color: #333;
+    color: var(--primary);
+    font-weight: 600;
+    font-size: 1.8rem;
 }
 
 .software-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    padding: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
+    padding: 20px 0;
 }
 
 .software-card {
-    background: #fff;
-    border-radius: 10px;
-    padding: 20px;
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 25px 20px;
     text-align: center;
-    transition: transform 0.3s ease;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(0, 123, 255, 0.1);
 }
 
 .software-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    box-shadow: var(--shadow-hover);
+    border-color: rgba(0, 123, 255, 0.3);
 }
 
 .software-card a {
     text-decoration: none;
     color: #333;
+    display: block;
 }
 
 .software-card img {
-    width: 100px;
-    height: 100px;
+    width: 130px;
+    height: 130px;
     margin-bottom: 15px;
-    border-radius: 10px;
+    border-radius: 8px;
+    object-fit: cover;
 }
 
 .software-card h3 {
-    font-size: 1.2em;
-    margin-top: 10px;
+    font-size: 1.1rem;
+    margin: 8px 0;
+    color: #444;
+    font-weight: 500;
 }
 
+.software-card h3:first-of-type {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+/* 响应式设计 */
 @media (max-width: 768px) {
     .software-grid {
         grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
     }
     
     header h1 {
-        font-size: 2em;
+        font-size: 2rem;
     }
-} 
+    
+    .container {
+        padding: 15px;
+    }
+    
+    .software-card {
+        padding: 20px 15px;
+    }
+    
+    .software-card img {
+        width: 80px;
+        height: 80px;
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        padding: 30px 0;
+    }
+    
+    header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .software-grid {
+        grid-template-columns: 1fr;
+    }
+}
