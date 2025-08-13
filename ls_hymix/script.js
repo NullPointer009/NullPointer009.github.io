@@ -341,8 +341,8 @@ function plotPredictionScatter(varNames, y_true, y_pred) {
     const layout = {
       title: name,
       margin: { l: 40, r: 10, t: 36, b: 40 },
-      xaxis: { title: '原始', range },
-      yaxis: { title: '计算', range },
+      xaxis: { title: '实测值', range },
+      yaxis: { title: '计算值', range },
       showlegend: false
     };
 
