@@ -324,7 +324,7 @@ function plotPredictionScatter(varNames, y_true, y_pred) {
       y: yData,
       mode: 'markers',
       type: 'scatter',
-      marker: { size: 6 },
+      marker: { size: 6 , color: '#007bff' },
       name: '样本'
     };
 
