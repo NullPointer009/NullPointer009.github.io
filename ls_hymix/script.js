@@ -230,7 +230,7 @@ function calcGasNonlinear(a, b, params) {
         const r = (pred - (isotopeObs[j] || 0));
         s += r * r;
       }
-      return s / half; // ✅ 平均残差平方和
+      return s / n; // ✅ 平均残差平方和
     };
     const res = goldenSectionMin(objective, 0, 1, 1e-7, 300);
     const x = res.x;
